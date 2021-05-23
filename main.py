@@ -90,7 +90,8 @@ def minmax(p, calories, food_vars, food_items, fat, carbs, protein, normal_d, so
     p += lpSum([iron[f] * food_vars[f] for f in food_items]) <= 40.0
 
     # p.writeLP("SimpleDietProblem.lp")
-    p.solve()
+    p.solve(PULP_CBC_CMD(msg=0))
+    print(" \n \n \n ")
     print('Your Diet for Safe Weight Loss (least cost): ')
     print(tabulate(normal_d.items(), headers=['ELEMENT', 'VALUE G.'], tablefmt="grid"))
     print("-" * 110)
@@ -98,6 +99,7 @@ def minmax(p, calories, food_vars, food_items, fat, carbs, protein, normal_d, so
     for v in p.variables():
         if v.varValue > 0:
             print(str(v.name)[2:], "=", v.varValue, 'or', portions[new_dicts_food_var[v]] * v.varValue, 'g.')
+    print()
     print("The total cost of this balanced diet is: ${}".format(round(value(p.objective), 2)))
 
 
